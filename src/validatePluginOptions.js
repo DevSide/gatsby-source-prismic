@@ -35,12 +35,9 @@ const baseValidations = {
   plugins: yupArray()
     .max(0)
     .default([]),
-  repositoryName: yupString()
-    .nullable()
-    .required(),
-  repositoryName: yupString()
-    .nullable()
-    .required(),
+  queryPredicates: yupMixed()
+    .test('is function', '${path} is not a function', RA.isFunction)
+    .default(() => [[]]),
 }
 
 export const validatePluginOptions = (pluginOptions, requireSchemas = true) => {

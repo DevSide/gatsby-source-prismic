@@ -96,13 +96,16 @@ const PreviewPage = ({ location }) => {
     htmlSerializer: ({ node, key, value }) => () => {},
   })
 
-  useEffect(() => {
-    if (previewData) {
-      navigate(path, {
-        state: { previewData: JSON.stringify(previewData) },
-      })
-    }
-  }, [previewData, path])
+  useEffect(
+    () => {
+      if (previewData) {
+        navigate(path, {
+          state: { previewData: JSON.stringify(previewData) },
+        })
+      }
+    },
+    [previewData, path],
+  )
 
   return <Spinner />
 }

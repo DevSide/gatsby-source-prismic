@@ -135,6 +135,22 @@ plugins: [
       // the prefix.
       // This defaults to 'prismic-typepaths---${repositoryName}'.
       typePathsFilenamePrefix: 'prismic-typepaths---gatsby-source-prismic-test-site',
+
+
+      // Set a function to agreggate documents from a list of query predicates
+      // Each predicate in the list leads to a an independent call api, all results are merged.
+      // See: https://prismic.io/docs/javascript/query-the-api/query-predicates-reference
+      // The default is a single request with an empty predicate to query all documents.
+      //
+      // Example:
+      // queryPredicates: Predicates => ([
+      //   Predicates.at(document.tags, ['foo']),
+      //   Predicates.at(document.type, 'bar')
+      // ]),
+      //
+      queryPredicates: (Predicates) => ([
+        []
+      ])
     },
   },
 ]

@@ -81,14 +81,17 @@ export const usePrismicPreview = (location, overrides) => {
   )
 
   // Fetches and parses the JSON file of the typePaths we write at build time.
-  const fetchTypePaths = useCallback(async () => {
-    const req = await fetch(
-      `/${typePathsFilenamePrefix}${schemasDigest}.json`,
-      { headers: { 'Content-Type': 'application/json' } },
-    )
+  const fetchTypePaths = useCallback(
+    async () => {
+      const req = await fetch(
+        `/${typePathsFilenamePrefix}${schemasDigest}.json`,
+        { headers: { 'Content-Type': 'application/json' } },
+      )
 
-    return await req.json()
-  }, [typePathsFilenamePrefix, schemasDigest])
+      return await req.json()
+    },
+    [typePathsFilenamePrefix, schemasDigest],
+  )
 
   // Normalizes preview data using browser-compatible normalize functions.
   const normalizePreviewData = useCallback(
@@ -126,33 +129,36 @@ export const usePrismicPreview = (location, overrides) => {
   )
 
   // Fetches and normalizes preview data from Prismic.
-  const asyncEffect = useCallback(async () => {
-    const searchParams = new URLSearchParams(location.search)
-    const token = searchParams.get('token')
-    const docID = searchParams.get('documentId')
+  const asyncEffect = useCallback(
+    async () => {
+      const searchParams = new URLSearchParams(location.search)
+      const token = searchParams.get('token')
+      const docID = searchParams.get('documentId')
 
-    // Required to send preview cookie on all API requests on future routes.
-    setCookie(Prismic.previewCookie, token)
+      // Required to send preview cookie on all API requests on future routes.
+      setCookie(Prismic.previewCookie, token)
 
-    const rawPreviewData = await fetchRawPreviewData(docID)
-    const path = pathResolver
-      ? pathResolver(rawPreviewData)
-      : linkResolver(rawPreviewData)
-    const previewData = await normalizePreviewData(rawPreviewData)
+      const rawPreviewData = await fetchRawPreviewData(docID)
+      const path = pathResolver
+        ? pathResolver(rawPreviewData)
+        : linkResolver(rawPreviewData)
+      const previewData = await normalizePreviewData(rawPreviewData)
 
-    setState({
-      ...state,
-      path,
-      previewData,
-    })
-  }, [
-    fetchRawPreviewData,
-    linkResolver,
-    location.search,
-    normalizePreviewData,
-    pathResolver,
-    state,
-  ])
+      setState({
+        ...state,
+        path,
+        previewData,
+      })
+    },
+    [
+      fetchRawPreviewData,
+      linkResolver,
+      location.search,
+      normalizePreviewData,
+      pathResolver,
+      state,
+    ],
+  )
 
   useEffect(() => {
     asyncEffect()
